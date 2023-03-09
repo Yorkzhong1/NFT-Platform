@@ -8,6 +8,7 @@
   - 服务器端程序为server目录下
   - 合约在Contract目录下
 
-  客户端采用javascript/react/bootstrap
-  服务器端使用node.js
-  合约使用solidity
+  语言使用：
+  - 客户端采用javascript/react/bootstrap
+  - 服务器端使用node.js
+  - 合约使用
