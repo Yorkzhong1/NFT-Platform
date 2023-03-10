@@ -104,11 +104,11 @@ export default function Home() {
       // let add=contractAdd1
       // getTokenIdsMinted({add,setTokenIdsMinted,setMaxTokenId,setLoading})
       // set an interval to get the number of token Ids minted every 5 seconds
-      setInterval(async function () {
-        // getContracts(setContractData) 
-        // getTokenIdsMinted({add,setTokenIdsMinted,setMaxTokenId,setLoading})
-        // await getTokenIdsMinted({add,setTokenIdsMinted,setMaxTokenId});
-      }, 5 * 1000);
+      // setInterval(async function () {
+      //   // getContracts(setContractData) 
+      //   // getTokenIdsMinted({add,setTokenIdsMinted,setMaxTokenId,setLoading})
+      //   // await getTokenIdsMinted({add,setTokenIdsMinted,setMaxTokenId});
+      // }, 5 * 1000);
          
     }
   }, [walletConnected]);
