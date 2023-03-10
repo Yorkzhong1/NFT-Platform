@@ -111,7 +111,7 @@ export default function Home() {
       }, 5 * 1000);
          
     }
-  });
+  }, [walletConnected,connectWallet,contractAdd1]);
 
   /*
         renderButton: Returns a button based on the state of the dapp
