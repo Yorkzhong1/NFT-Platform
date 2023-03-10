@@ -99,6 +99,7 @@ export default function Home() {
         disableInjectedProvider: false,
       });
       connectWallet();
+      eslint-disable-next-line-react-hooks/exhaustive-deps
       
       // getContracts(setContractData)  
       // let add=contractAdd1
