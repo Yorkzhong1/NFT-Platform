@@ -20,7 +20,7 @@ export const getProviderOrSigner = async (needSigner = false) => {
 
     // If user is not connected to the Mumbai network, let them know and throw an error
     const { chainId } = await web3Provider.getNetwork();
-    if (chainId !== 1337) {
+    if (chainId !== 80001) {
       window.alert("Change the network to Mumbai");
       throw new Error("Change network to Mumbai");
     }

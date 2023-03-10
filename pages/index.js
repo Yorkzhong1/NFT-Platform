@@ -21,7 +21,7 @@ export default function Home() {
   const [maxTokenId, setMaxTokenId] = useState("0");
   const [contractData,setContractData]=  useState([])
   const [contractAdd1,setContractAdd1]=  useState('')
-  const contractAdd = useRef("");
+  // const contractAdd = useRef("");
   /**
    * publicMint: Mint an NFT
    */
