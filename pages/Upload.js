@@ -20,7 +20,7 @@ import {
 
 const Pinata_api_key =  "dc5bf98b2fd4875f0913"
 const Pinata_secret_api_key =  "479ec86c28bdf05eb13a13c86ea6029281f204b3ed3d6e55d372d5eff2b70044"
-const serverUrl1 = 'https://nft-server.onrender.com:10000';
+// const serverUrl = 'https://nft-server.onrender.com';
 
 // const sleep = (ms) => {
 //   return new Promise(resolve => setTimeout(resolve, ms));
@@ -28,6 +28,8 @@ const serverUrl1 = 'https://nft-server.onrender.com:10000';
 
 
 export const FolderUpload = () => {
+
+  
   
   const selectedFiles=useRef()
   const [loading,setLoading] = useState(false);
@@ -57,9 +59,8 @@ const symble = useRef('Punk');
 
   const upLoadMeta = async function() {
     console.log('sending request to server')
-    // console.log(JSON.stringify(fileNames))
-    // const res1 = await axios.post(`${serverUrl1}/fileNames`,{fileNames:JSON.stringify(fileNames)})
-    const res2 = await axios.post(`${serverUrl1}/meta`,{name:name,description:description,number:numberOfPic,CID:CID,fileNames:JSON.stringify(fileNames)})
+    console.log(serverUrl)
+    const res2 = await axios.post(`${serverUrl}/meta`,{name:name,description:description,number:numberOfPic,CID:CID,fileNames:JSON.stringify(fileNames)})
     console.log(res2.data)
     setMetaDataCID(res2.data)
     document.getElementById('uploadMeta').className="btn btn-info w-100 mt-3 text-white"
@@ -129,7 +130,7 @@ const symble = useRef('Punk');
       document.getElementById('deployContract').className="btn btn-info w-100 mt-3 text-white"
       //upadte contract address
       console.log(name,myAddress,contract.address)
-      const res = await axios.post(`${serverUrl1}/contracts`,{name:name,pic:`${CID}/${fileNames[0]}`, contractAdd:contract.address,myAddress:myAddress})
+      const res = await axios.post(`${serverUrl}/contracts`,{name:name,pic:`${CID}/${fileNames[0]}`, contractAdd:contract.address,myAddress:myAddress})
     } catch (err) {
       console.error(err);
     }
@@ -198,6 +199,6 @@ const symble = useRef('Punk');
 
 
 export const getContracts = async (setContractData) => {
-  const res = await axios.get(`${serverUrl1}/contracts`)
+  const res = await axios.get(`${serverUrl}/contracts`)
   setContractData(JSON.parse(res.data))
 };
