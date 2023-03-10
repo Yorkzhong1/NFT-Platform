@@ -98,8 +98,20 @@ export default function Home() {
         providerOptions: {},
         disableInjectedProvider: false,
       });
+
+      const connectWallet = async () => {
+        try {
+          // Get the provider from web3Modal, which in our case is MetaMask
+          // When used for the first time, it prompts the user to connect their wallet
+          await getProviderOrSigner();
+          setWalletConnected(true);
+        } catch (err) {
+          console.error(err);
+        }
+      };
+
       connectWallet();
-      eslint-disable-next-line-react-hooks/exhaustive-deps
+      // eslint-disable-next-line-react-hooks/exhaustive-deps
       
       // getContracts(setContractData)  
       // let add=contractAdd1
