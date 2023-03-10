@@ -13,7 +13,7 @@ async function main() {
   const lw3PunksContract = await ethers.getContractFactory("AlphaPunk");
 
   // deploy the contract
-  const deployedLW3PunksContract = await lw3PunksContract.deploy(metadataURL);
+  const deployedLW3PunksContract = await lw3PunksContract.deploy(metadataURL,10,"testing Punk","TP");
 
   await deployedLW3PunksContract.deployed();
 

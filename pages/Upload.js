@@ -27,7 +27,8 @@ const serverUrl1 = 'http://localhost:1000';
 
 
 export const FolderUpload = () => {
-  const [selectedFile, setSelectedFile] = useState();
+  
+  const selectedFiles=useRef()
   const [loading,setLoading] = useState(false);
   
   //states on NFT
@@ -40,8 +41,15 @@ export const FolderUpload = () => {
   const [CID, setCID] = useState("");
   const [MetaDataCID, setMetaDataCID] = useState("");
 
+
+//contract deploy states
+
+const symble = useRef('Punk');
+
+
   const changeHandler = (event) => {
-    setSelectedFile(event.target.files);
+    
+    selectedFiles.current=event.target.files
   };
 
   const dropZone = document.getElementById("drop-zone");
@@ -60,18 +68,17 @@ export const FolderUpload = () => {
 
   async function handleSubmission() {
     let names=[]
-    console.log(selectedFile[0])
-    console.log(Array.from(selectedFile)[0])
+
     
-    setNumberOfPic(Array.from(selectedFile).length)
+    setNumberOfPic(Array.from(selectedFiles.current).length)
 
     const formData = new FormData();
-    Array.from(selectedFile).forEach((file) => {
+    Array.from(selectedFiles.current).forEach((file) => {
       formData.append("file", file);
       names.push(file.name)
     });
     setFileNames(names)
-    var relativePath = selectedFile[0].webkitRelativePath;
+    var relativePath = selectedFiles.current[0].webkitRelativePath;
     var folderName = relativePath.split("/")[0];
     const metadata1 = JSON.stringify({
       name: folderName
@@ -99,7 +106,7 @@ export const FolderUpload = () => {
     }
 
     console.log('Picture are uploaded')
-    window.alert(`${Array.from(selectedFile).length}个图片已经上传IPFS; 地址为:${metaCID}`);
+    window.alert(`${Array.from(selectedFiles.current).length}个图片已经上传IPFS; 地址为:${metaCID}`);
     
     document.getElementById('uploadPic').className="btn btn-info w-100 mt-3 text-white"
     document.getElementById('uploadMeta').className="btn btn-danger w-100 mt-3 text-white"
@@ -107,13 +114,13 @@ export const FolderUpload = () => {
   }
 
 
-  const deploytContract = async (prop) => {
-    console.log(prop)
+  const deploytContract = async (name,maxTokenId,symble,URI) => {
+    console.log('deploy contract prop',name,maxTokenId,symble,URI)
     try {
       const signer = await getProviderOrSigner(true);
       const myAddress=await signer.getAddress();
       const Contract = new ethers.ContractFactory(CONTRACT_abi,CONTRACT_code,signer);
-      const contract = await Contract.deploy(prop);
+      const contract = await Contract.deploy(name,maxTokenId,symble,URI);
       // wait for the transaction to get mined
       await contract.deployed();
       console.log(contract.address)
@@ -133,10 +140,10 @@ export const FolderUpload = () => {
       <div className="m-5, p-3 border border-dark border-1">
           <h4 className="text-center">合约部署</h4>
           <div className="text-left">
-              <div className="text-info">合约部署共需要三个步骤:</div>
-              <div>首先请将所有图片放在一个文件夹内，并将次文件夹上传</div>
-              <div>第二步请“制作并上传metaData”</div>
-              <div>第三步请“部署合约”</div>
+              <div className="text-info">合约部署共需要三个步骤，请逐次点击按钮:</div>
+              <div>第一步：将所有图片放在一个文件夹内，并将次文件夹上传</div>
+              <div>第二步：制作并上传metaData</div>
+              <div>第三步：部署合约</div>
           </div>
           <div className="input-group mb-3 mt-2">
               <div className="input-group-prepend">
@@ -155,6 +162,14 @@ export const FolderUpload = () => {
                 setName(e.target.value)
               }}
               />
+              <div className="input-group-prepend">
+                <span className="input-group-text" id="basic-addon1" >NFT符号</span>
+              </div>
+              <input type="text" className="form-control" required = {true} placeholder="PK" aria-label="Username" aria-describedby="basic-addon1"
+              onChange={(e)=>{
+                symble.current=e.target.value
+              }}
+              />
         </div>
 
 
@@ -170,7 +185,7 @@ export const FolderUpload = () => {
         </div>
         <button id="uploadPic" className="btn btn-danger w-100" onClick={handleSubmission}>1. 上传图片至IPFS</button>
         <button id="uploadMeta" className="btn btn-white w-100 mt-3 text-white" onClick={upLoadMeta}>2. 制作并上传MetaData</button> 
-        <button id="deployContract" className="btn btn-white w-100 mt-3 text-white" onClick={()=>{deploytContract(`ipfs://${MetaDataCID}`)}}>3.部署合约 🚀</button> 
+        <button id="deployContract" className="btn btn-white w-100 mt-3 text-white" onClick={()=>{deploytContract(name,numberOfPic,symble,`ipfs://${MetaDataCID}`)}}>3.部署合约 🚀</button> 
       </div>
 
       <div className="m-5"></div>
@@ -181,13 +196,7 @@ export const FolderUpload = () => {
 }
 
 
-
-
-
-
 export const getContracts = async (setContractData) => {
   const res = await axios.get(`${serverUrl1}/contracts`)
-  console.log(res.data)
-  setContractData(res.data)
-
+  setContractData(JSON.parse(res.data))
 };

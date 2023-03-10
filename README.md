@@ -12,3 +12,7 @@
   - 客户端采用javascript/react/bootstrap
   - 服务器端使用node.js
   - 合约使用
+
+  下一步：
+ -   升级智能合约
+ -   加入更多公链

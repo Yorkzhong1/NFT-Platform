@@ -16,9 +16,12 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const web3ModalRef = useRef();
   const [buttonFunction, setButtonFunction] = useState(1);
+  
   const [tokenIdsMinted, setTokenIdsMinted] = useState("0");
-  const [metadataURL, setMetadataURL] = useState("");
+  const [maxTokenId, setMaxTokenId] = useState("0");
   const [contractData,setContractData]=  useState([])
+  const [contractAdd1,setContractAdd1]=  useState('')
+  const contractAdd = useRef("");
   /**
    * publicMint: Mint an NFT
    */
@@ -38,23 +41,8 @@ export default function Home() {
     }
   };
 
-  /**
-   * getTokenIdsMinted: gets the number of tokenIds that have been minted
-   */
-  
+ 
 
-  /**
-   * Returns a Provider or Signer object representing the Ethereum RPC with or without the
-   * signing capabilities of metamask attached
-   *
-   * A `Provider` is needed to interact with the blockchain - reading transactions, reading balances, reading state, etc.
-   *
-   * A `Signer` is a special type of Provider used in case a `write` transaction needs to be made to the blockchain, which involves the connected account
-   * needing to make a digital signature to authorize the transaction being sent. Metamask exposes a Signer API to allow your website to
-   * request signatures from the user using Signer functions.
-   *
-   * @param {*} needSigner - True if you need the signer, default false otherwise
-   */
   const getProviderOrSigner = async (needSigner = false) => {
     // Connect to Metamask
     // Since we store `web3Modal` as a reference, we need to access the `current` value to get access to the underlying object
@@ -75,6 +63,31 @@ export default function Home() {
     return web3Provider;
   };
 
+  const showContracts = ()=>{
+    
+    const names=[]
+    const adds=[]
+    contractData.forEach((item)=>{
+      names.push(item.name)
+      adds.push(item.contractAdd)
+    })
+  
+
+    if (buttonFunction==2){
+    
+     
+    return(
+      <div className="d-flex text-center">
+        <button className="btn btn-info m-3" onClick={()=>{setContractAdd1(adds[0])}}>{names[0]}</button>
+        <button className="btn btn-info m-3" onClick={()=>{setContractAdd1(adds[1])}}>{names[1]}</button>
+        <button className="btn btn-info m-3" onClick={()=>{setContractAdd1(adds[2])}}>{names[2]}</button>
+        <button className="btn btn-info m-3" onClick={()=>{setContractAdd1(adds[3])}}>{names[3]}</button>
+        <button className="btn btn-info m-3" onClick={()=>{setContractAdd1(adds[4])}}>{names[4]}</button>
+        <button className="btn btn-info m-3" onClick={()=>{setContractAdd1(adds[5])}}>{names[5]}</button>
+        <button className="btn btn-info m-3" onClick={()=>{setContractAdd1(adds[6])}}>{names[6]}</button>
+      </div>
+    )}
+  }
   // useEffects are used to react to changes in state of the website
   // The array at the end of function call represents what state changes will trigger this effect
   // In this case, whenever the value of `walletConnected` changes - this effect will be called
@@ -86,12 +99,17 @@ export default function Home() {
         disableInjectedProvider: false,
       });
       connectWallet();
-      getTokenIdsMinted({setTokenIdsMinted});
+      
+      getContracts(setContractData)  
+      let add=contractAdd1
+      // getTokenIdsMinted({add,setTokenIdsMinted,setMaxTokenId,setLoading})
       // set an interval to get the number of token Ids minted every 5 seconds
       setInterval(async function () {
-        await getTokenIdsMinted({setTokenIdsMinted});
+        getContracts(setContractData) 
+        // getTokenIdsMinted({add,setTokenIdsMinted,setMaxTokenId,setLoading})
+        // await getTokenIdsMinted({add,setTokenIdsMinted,setMaxTokenId});
       }, 5 * 1000);
-        getContracts(setContractData)   
+         
     }
   }, [walletConnected]);
 
@@ -126,11 +144,12 @@ export default function Home() {
     if (buttonFunction==2){
       return(
         <div className="text-center">
-          <h4>请选择NFT项目</h4>
-          {contractData}
-
-          <div className={styles.description}>已经mint了{tokenIdsMinted}/10个NFT</div>
-          <button className={styles.button} onClick={()=>{publicMint({setLoading})}}>Public Mint 🚀</button>
+          <button className={styles.button} onClick={()=>{
+            let add=contractAdd1
+            publicMint({add, setLoading})
+            getTokenIdsMinted({add,setTokenIdsMinted,setMaxTokenId,setLoading})
+            }}>Public Mint 🚀</button>
+          <div className={styles.description}>已经mint了{tokenIdsMinted}/{maxTokenId}个NFT</div>
         </div>
       )
     }
@@ -158,7 +177,6 @@ export default function Home() {
       </Head>
       <div className="container">
            <div className="row mt-5">
-              
               <div className="col-1 bg-dark m-1">
               <div className="d-grid gap-2">
                   <div className='mt-3 text-left'></div>
@@ -172,11 +190,10 @@ export default function Home() {
                   <div className="text-center">
                       <h1 className={styles.title}>欢迎来到NFT世界!</h1>
                   </div>
+                  <div> <h4 className="text-center">选择要Mint的NFT</h4>{showContracts()}</div>
+                  <div id="contactDisplay"></div>
                   {renderButton()}
-                  
               </div>
-             
-              
           </div>
         </div>
       <footer className={styles.footer}>由Alpha &#10084;制作</footer>

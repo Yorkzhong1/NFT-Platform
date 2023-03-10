@@ -20,7 +20,7 @@ contract AlphaPunk is ERC721Enumerable, Ownable {
     bool public _paused;
 
     // max number of LW3Punks
-    uint256 public maxTokenIds = 10;
+    uint256 public maxTokenIds;
 
     // total number of tokenIds minted
     uint256 public tokenIds;
@@ -35,8 +35,9 @@ contract AlphaPunk is ERC721Enumerable, Ownable {
         * name in our case is `LW3Punks` and symbol is `LW3P`.
         * Constructor for LW3P takes in the baseURI to set _baseTokenURI for the collection.
         */
-    constructor (string memory baseURI) ERC721("Alpha Punk set2", "AP") {
+    constructor (string memory baseURI,uint _maxTokenIds,string memory name, string memory symbol) ERC721(name, symbol) {
         _baseTokenURI = baseURI;
+        maxTokenIds = _maxTokenIds;
     }
 
     /**
@@ -69,7 +70,7 @@ contract AlphaPunk is ERC721Enumerable, Ownable {
         // the tokenId and `.json` to it so that it knows the location of the metadata json file for a given
         // tokenId stored on IPFS
         // If baseURI is empty return an empty string
-        return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, "/",tokenId.toString(), ".json")) : "";
+        return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, "/",tokenId.toString())) : "";
     }
 
     /**
