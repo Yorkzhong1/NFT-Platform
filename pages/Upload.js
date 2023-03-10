@@ -15,11 +15,12 @@ import {
   CONTRACT_abi,
   NFT_CONTRACT_ADDRESS,
   CONTRACT_code,
+  serverUrl,
 } from "../constants";
 
 const Pinata_api_key =  "dc5bf98b2fd4875f0913"
 const Pinata_secret_api_key =  "479ec86c28bdf05eb13a13c86ea6029281f204b3ed3d6e55d372d5eff2b70044"
-const serverUrl1 = 'http://localhost:1000';
+const serverUrl1 = 'https://nft-server.onrender.com:10000';
 
 // const sleep = (ms) => {
 //   return new Promise(resolve => setTimeout(resolve, ms));

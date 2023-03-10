@@ -49,4 +49,9 @@ app.get('/contracts',(req,res)=>{
     res.json(JSON.stringify(contracts))
 })
 
+app.get('/test',(req,res)=>{
+    res.send("Hello")
+})
+
+
  module.exports = app;
